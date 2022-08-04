@@ -8,7 +8,16 @@
 import UIKit
 
 class EmailViewController: UIViewController {
-
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var placeholderLabel: UILabel!
+    @IBOutlet weak var emailField: UITextField!
+    @IBOutlet weak var titleLabelBottomConstraint: NSLayoutConstraint!
+    
+    @IBAction func movePrevious(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
