@@ -83,6 +83,18 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UITextFieldDelegate {
+    // keyboard 에서 return 키를 tab 할 때마다 호출
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let cnt = textField.text?.count ?? 0
+        
+        // 입력값이 있다면 return 키를 눌렀을 때 화면 이동
+        if cnt > 0 {
+            performSegue(withIdentifier: "emailSegue", sender: nil)
+        }
+        
+        return true
+    }
+    
     // textField 에서 편집이 실행된 다음에 호출
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // firstResponder 설정으로 인한 animation 비활성화

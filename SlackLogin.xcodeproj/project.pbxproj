@@ -13,6 +13,7 @@
 		104D9C3A289BC8BB00930EAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 104D9C38289BC8BB00930EAD /* Main.storyboard */; };
 		104D9C3C289BC8BC00930EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 104D9C3B289BC8BC00930EAD /* Assets.xcassets */; };
 		104D9C3F289BC8BC00930EAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 104D9C3D289BC8BC00930EAD /* LaunchScreen.storyboard */; };
+		10D6D930289C114100837111 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D6D92F289C114100837111 /* EmailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		104D9C3B289BC8BC00930EAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		104D9C3E289BC8BC00930EAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		104D9C40289BC8BC00930EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10D6D92F289C114100837111 /* EmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				104D9C32289BC8BB00930EAD /* AppDelegate.swift */,
 				104D9C34289BC8BB00930EAD /* SceneDelegate.swift */,
 				104D9C36289BC8BB00930EAD /* ViewController.swift */,
+				10D6D92F289C114100837111 /* EmailViewController.swift */,
 				104D9C38289BC8BB00930EAD /* Main.storyboard */,
 				104D9C3B289BC8BC00930EAD /* Assets.xcassets */,
 				104D9C3D289BC8BC00930EAD /* LaunchScreen.storyboard */,
@@ -141,6 +144,7 @@
 				104D9C37289BC8BB00930EAD /* ViewController.swift in Sources */,
 				104D9C33289BC8BB00930EAD /* AppDelegate.swift in Sources */,
 				104D9C35289BC8BB00930EAD /* SceneDelegate.swift in Sources */,
+				10D6D930289C114100837111 /* EmailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
