@@ -23,16 +23,69 @@ class ViewController: UIViewController {
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var placeholderLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
+    // Notification token 저장 속성
+    var tokens = [NSObjectProtocol]()
+    
+    // 옵저버 제거
+    // Scene 이 완전히 제거되는 시점에 옵저버를 함께 제거한다.
+    deinit {
+        tokens.forEach { NotificationCenter.default.removeObserver($0) }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        urlField.becomeFirstResponder()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        // 옵저버 등록
+        var token = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main) { [weak self] (noti) in
+            
+            // keyboard 높이 값을 얻어 keyboard 높이만큼 여백 추가
+            if let frameValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let keyboardFrame = frameValue.cgRectValue
+                
+                // bottom 여백 지정
+                self?.bottomConstraint.constant = keyboardFrame.size.height
+                
+                // UIView Animation 적용, keyboard 가 표시되기 직전에 실행
+                UIView.animate(withDuration: 0.3, animations: {
+                    self?.view.layoutIfNeeded()
+                }) { finished in
+                    // textFieldDidBeginEditing 에서 비활성화한 animation 활성화
+                    UIView.setAnimationsEnabled(true)
+                }
+            }
+        }
+        tokens.append(token)
+        
+        // keyboard 가 사라지기 전에 전달된다.
+        token = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: { [weak self] (noti) in
+            
+            self?.bottomConstraint.constant = 0
+            
+            UIView.animate(withDuration: 0.3) {
+                self?.view.layoutIfNeeded()
+            }
+        })
+        tokens.append(token)
     }
-
 
 }
 
 extension ViewController: UITextFieldDelegate {
+    // textField 에서 편집이 실행된 다음에 호출
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // firstResponder 설정으로 인한 animation 비활성화
+        UIView.setAnimationsEnabled(false)
+    }
+    
     // 소문자 숫자 하이픈만 허용하도록 제한
     // textfield 에 새로운 문자를 입력하거나 삭제할 때마다 호출된다.
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
