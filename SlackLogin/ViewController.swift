@@ -44,6 +44,30 @@ extension ViewController: UITextFieldDelegate {
             }
         }
         
+        // 입력이나 삭제가 반영된 최종 문자열이 구성된다.
+        let finalText = NSMutableString(string: textField.text ?? "")
+        finalText.replaceCharacters(in: range, with: string)
+        
+        // 입력된 텍스트 너비 구하기
+        // 텍스트 너비는 폰트를 기준으로 계산한다.
+        let font = textField.font ?? UIFont.systemFont(ofSize: 16)
+        
+        // 위의 폰트를 가지고 문자열 속성 dictionary 를 만든다.
+        let dict = [NSAttributedString.Key.font: font]
+        
+        let width = finalText.size(withAttributes: dict).width
+        
+        // 계산된 너비로 왼쪽 여백 업데이트
+        placeholderLeadingConstraint.constant = width
+        
+        // placeholder 에 표시되는 텍스트 업데이트
+        // 입력된 문자열 길이에 따라서 달라진다.
+        if finalText.length == 0 {
+            placeholderLabel.text = "workspace-url.slack.com"
+        } else {
+            placeholderLabel.text = ".slack.com"
+        }
+        
         return true
     }
 }
