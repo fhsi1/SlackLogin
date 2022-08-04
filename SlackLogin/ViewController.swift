@@ -44,6 +44,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        // next 버튼 비활성화 : 초기 설정
+        nextButton.isEnabled = false
+        
         // 옵저버 등록
         var token = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main) { [weak self] (noti) in
             
@@ -120,6 +123,9 @@ extension ViewController: UITextFieldDelegate {
         } else {
             placeholderLabel.text = ".slack.com"
         }
+        
+        // finalText 의 길이에 따라 next 버튼 활성화
+        nextButton.isEnabled = finalText.length > 0
         
         return true
     }
