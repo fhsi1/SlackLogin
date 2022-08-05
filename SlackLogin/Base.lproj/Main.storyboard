@@ -201,6 +201,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="9GP-g2-OPf"/>
                     <connections>
+                        <outlet property="bottomConstraint" destination="Tzr-55-wEE" id="J25-4c-6AV"/>
                         <outlet property="emailField" destination="m3h-HJ-JPS" id="owc-pR-E0P"/>
                         <outlet property="placeholderLabel" destination="QZm-ID-h86" id="3xf-55-Dy5"/>
                         <outlet property="titleLabel" destination="7OI-eu-J1Q" id="4W0-jc-HfP"/>

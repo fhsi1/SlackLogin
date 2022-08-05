@@ -8,14 +8,29 @@
 import UIKit
 
 class EmailViewController: UIViewController {
+    // keyboard 높이
+    var bottomMargin: CGFloat?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var titleLabelBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     @IBAction func movePrevious(_ sender: Any) {
         navigationController?.popViewController(animated: true)
+    }
+    
+    var tokens = [NSObjectProtocol]()
+    
+    deinit {
+        tokens.forEach { NotificationCenter.default.removeObserver($0) }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        emailField.becomeFirstResponder()
     }
     
     override func viewDidLoad() {
@@ -24,6 +39,36 @@ class EmailViewController: UIViewController {
         // Do any additional setup after loading the view.
         titleLabel.alpha = 0.0
         titleLabelBottomConstraint.constant = -20
+        
+        // 전달된 keyboard 높이로 bottom 여백 초기화
+        bottomConstraint.constant = bottomMargin ?? 0.0
+        // 업데이트
+        UIView.performWithoutAnimation {
+            self.view.layoutIfNeeded()
+        }
+        
+        var token = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main) { [weak self] (noti) in
+            if let frameValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let keyboardFrame = frameValue.cgRectValue
+                
+                // 이전 화면에서 사용한 값을 우선적으로 사용할 수 있도록 한다.
+                self?.bottomConstraint.constant = self?.bottomMargin ?? keyboardFrame.size.height
+                
+                UIView.animate(withDuration: 0.3) {
+                    self?.view.layoutIfNeeded()
+                }
+            }
+        }
+        tokens.append(token)
+        
+        token = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: { [weak self] (Notification) in
+            self?.bottomConstraint.constant = 0
+            
+            UIView.animate(withDuration: 0.3) {
+                self?.view.layoutIfNeeded()
+            }
+        })
+        tokens.append(token)
     }
     
 

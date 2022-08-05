@@ -31,21 +31,16 @@ class ViewController: UIViewController {
     // 옵저버 제거
     // Scene 이 완전히 제거되는 시점에 옵저버를 함께 제거한다.
     deinit {
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         tokens.forEach { NotificationCenter.default.removeObserver($0) }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        urlField.becomeFirstResponder()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        // next 버튼 비활성화 : 초기 설정
-        nextButton.isEnabled = false
         
         // 옵저버 등록
         var token = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main) { [weak self] (noti) in
@@ -78,7 +73,28 @@ class ViewController: UIViewController {
             }
         })
         tokens.append(token)
+        
+        urlField.becomeFirstResponder()
     }
+    
+    // 화면이 전환되기 직전에 호출
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? EmailViewController {
+            vc.bottomMargin = bottomConstraint.constant
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        
+        // next 버튼 비활성화 : 초기 설정
+        nextButton.isEnabled = false
+        
+    }
+    
+    // animation 여부 결정을 위한 속성
+    var presented = false
 
 }
 
@@ -97,8 +113,11 @@ extension ViewController: UITextFieldDelegate {
     
     // textField 에서 편집이 실행된 다음에 호출
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        // firstResponder 설정으로 인한 animation 비활성화
-        UIView.setAnimationsEnabled(false)
+        if !presented {
+            // firstResponder 설정으로 인한 animation 비활성화
+            UIView.setAnimationsEnabled(false)
+            presented = true
+        }
     }
     
     // 소문자 숫자 하이픈만 허용하도록 제한
